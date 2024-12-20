@@ -1,6 +1,6 @@
 import { Button, Drawer, Text } from "rsuite";
 import { useCart } from "../context/useCart.tsx";
-import {HStack, Spacer, StackSeparator, VStack} from "@chakra-ui/react";
+import {Flex, HStack, Spacer, VStack} from "@chakra-ui/react";
 
 interface Product {
     id: number;
@@ -34,6 +34,14 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
         }
     };
 
+    const getTotalPrice = (cart: Product[]): number => {
+        const total = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+        console.log("Total Price:", total); // Debugging log
+        return total;
+    };
+
+    console.log("Cart:", cart); // Debugging log
+
     return (
         <Drawer open={isOpen} onClose={onClose}>
             <Drawer.Header>
@@ -49,13 +57,13 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                 {cart.length === 0 ? (
                     <p>Your cart is empty.</p>
                 ) : (
-                    <VStack spacing={4} align="start" seperator={StackSeparator}>
+                    <VStack spacing={4} >
                         {cart.map((item) => (
-                            <HStack key={item.id} spacing={4} align="start" width="100%">
+                            <HStack key={item.id} spacing={4}  width="100%">
                                 <Text size="lg">{item.title}</Text>
                                 <Spacer />
-                                <Spacer />
-                                <HStack >
+                                <HStack>
+                                    <Text size="lg">${item.price*item.quantity}</Text>
                                     <Button color="blue" appearance="ghost" onClick={() => handleDecreaseQuantity(item)}>
                                         −
                                     </Button>
@@ -66,12 +74,26 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                                         +
                                     </Button>
                                 </HStack>
-
                             </HStack>
                         ))}
                     </VStack>
                 )}
             </Drawer.Body>
+            <Flex justify="flex-end">
+            <Drawer.Footer style={{ position: "fixed",
+                bottom: 0,
+                textAlign: "center",
+                paddingBottom: 10,
+                padding: '16px',
+                borderTop: '1px solid #e5e5e5',
+                }}>
+                <HStack justify="space-between" width="100%" spacing={4} >
+                    <Text size="lg" >Subtotal:</Text>
+                    <Spacer/>
+                    <Text size="lg" >${getTotalPrice(cart).toFixed(2)}</Text>
+                </HStack>
+            </Drawer.Footer>
+            </Flex>
         </Drawer>
     );
 };

@@ -30,7 +30,13 @@ const Home = () => {
 
     if (loading) {
         return (
+            <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                padding: '10px'}}>
             <Spinner size="xl" />
+            </div>
 
         );
     }

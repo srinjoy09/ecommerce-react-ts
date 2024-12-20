@@ -1,6 +1,6 @@
 // src/pages/Checkout.tsx
 
-import {Box, Table} from "@chakra-ui/react";
+import {Box, Container, Table} from "@chakra-ui/react";
 import { useCart } from "../context/useCart";
 import {Button} from "rsuite";
 import "rsuite/dist/rsuite.min.css";
@@ -14,6 +14,7 @@ const Checkout = () => {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold">Checkout</h1>
+            <Container>
             {cart.length === 0 ? (
                 <p>Your cart is empty.</p>
             ) : (
@@ -38,7 +39,7 @@ const Checkout = () => {
                                 <Table.Cell>{item.title}</Table.Cell>
                                 <Table.Cell>{truncateDescription(item.description)}</Table.Cell>
                                 <Table.Cell>{item.quantity}</Table.Cell>
-                                <Table.Cell>{item.price}</Table.Cell>
+                                <Table.Cell>{item.price*item.quantity}</Table.Cell>
                                 <Table.Cell textAlign="end">
                                     <Box padding="0px 5px">
                                     <Button size="xs" color="red" appearance="ghost" onClick={() => removeFromCart(item.id)}>
@@ -52,6 +53,7 @@ const Checkout = () => {
                 </Table.Root>
                 </Box>
             )}
+            </Container>
         </div>
     );
 };
