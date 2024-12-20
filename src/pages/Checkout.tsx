@@ -23,6 +23,7 @@ const Checkout = () => {
                         <Table.Row>
                             <Table.ColumnHeader>Product</Table.ColumnHeader>
                             <Table.ColumnHeader>Description</Table.ColumnHeader>
+                            <Table.ColumnHeader>Quantity</Table.ColumnHeader>
                             <Table.ColumnHeader>Price</Table.ColumnHeader>
                             <Table.ColumnHeader textAlign="end">
                                 <Box padding="0px 5px">
@@ -36,6 +37,7 @@ const Checkout = () => {
                             <Table.Row key={item.id}>
                                 <Table.Cell>{item.title}</Table.Cell>
                                 <Table.Cell>{truncateDescription(item.description)}</Table.Cell>
+                                <Table.Cell>{item.quantity}</Table.Cell>
                                 <Table.Cell>{item.price}</Table.Cell>
                                 <Table.Cell textAlign="end">
                                     <Box padding="0px 5px">
