@@ -1,13 +1,14 @@
-// src/pages/Home.tsx
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
+import {Stack, Spinner} from "@chakra-ui/react";
 
 interface Product {
     id: number;
     title: string;
     price: number;
     image: string;
+    description: string;
 }
 
 const Home = () => {
@@ -27,14 +28,19 @@ const Home = () => {
             });
     }, []);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) {
+        return (
+            <Spinner size="xl" />
+
+        );
+    }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+        <Stack direction={['column', 'row']} wrap="wrap">
             {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
             ))}
-        </div>
+        </Stack>
     );
 };
 

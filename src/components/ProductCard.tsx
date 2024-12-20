@@ -1,12 +1,17 @@
 
-import {Button, HStack} from "@chakra-ui/react";
+import {Box, HStack, Stack} from "@chakra-ui/react";
+import { Button } from 'rsuite';
+
 import { useCart } from "../context/useCart";
+import { Card } from "@chakra-ui/react";
+import { Image, Text } from "@chakra-ui/react";
 
 interface Product {
     id: number;
     title: string;
     price: number;
     image: string;
+    description: string;
 }
 
 interface ProductCardProps {
@@ -15,6 +20,16 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
     const { addToCart, cart, updateCartItemQuantity, removeFromCart } = useCart();
+
+    let st, st1;
+    st= product.title + "";
+    st1= product.description + "";
+    if(st.length >= 20){
+        st=st.substring(0,20)+"..."
+    }
+    if(st1.length >= 70){
+        st1=st1.substring(0,70)+"..."
+    }
     const productQuantity = cart.find((item) => item.id === product.id)?.quantity || 0;
 
     const handleIncreaseQuantity = () => {
@@ -36,32 +51,50 @@ const ProductCard = ({ product }: ProductCardProps) => {
     };
 
     return (
-        <div className="border p-4 rounded shadow-lg">
-            <img src={product.image} alt={product.title} className="h-40 mx-auto" />
-            <h2 className="text-xl font-bold mt-2">{product.title}</h2>
-            <p className="text-gray-700">${product.price}</p>
-            <div className="flex items-center space-x-2 mt-2">
-                {productQuantity > 0 ? (
-                    // When product is in the cart, show "-" and "+" buttons with quantity
-                    <HStack>
-                        <Button colorScheme="teal" size="sm" onClick={handleDecreaseQuantity}>
-                            −
-                        </Button>
-                        <span className="text-teal-700 text-sm font-semibold">
+        <Stack direction={['column', 'row']} wrap="wrap">
+
+            <Card.Root maxW="sm" overflow="hidden" width="300px" height="400px"  >
+                <Box mx="auto" padding="5px">
+                <Image
+                    src={product.image}
+                    alt="Green double couch with wooden legs"
+                    boxSize='100px'
+                    objectFit='cover'
+                />
+                </Box>
+                <Card.Body gap="2" padding="15px 5px">
+                    <Card.Title>{st}</Card.Title>
+                    <Card.Description>{st1}</Card.Description>
+
+                    <Text textStyle="2xl" fontWeight="medium" letterSpacing="tight" mt="2">
+                        ${product.price}
+                    </Text>
+                </Card.Body>
+                <Card.Footer gap="2">
+                    {productQuantity > 0 ? (
+                        // When product is in the cart, show "-" and "+" buttons with quantity
+                        <HStack>
+                            <Button color="blue" appearance="ghost" onClick={handleDecreaseQuantity}>
+                                −
+                            </Button>
+                            <span className="text-teal-700 text-sm font-semibold">
                             {productQuantity}
                         </span>
-                        <Button colorScheme="teal" size="sm" onClick={handleIncreaseQuantity}>
-                            +
+                            <Button color="blue" appearance="ghost" onClick={handleIncreaseQuantity}>
+                                +
+                            </Button>
+                        </HStack>
+                    ) : (
+                        // When product is not in the cart, show "Add to Cart" button
+                        <Button color="blue" appearance="ghost" onClick={handleAddToCart}>
+                            Add to Cart
                         </Button>
-                    </HStack>
-                ) : (
-                    // When product is not in the cart, show "Add to Cart" button
-                    <Button colorScheme="teal" mt={2} onClick={handleAddToCart}>
-                        Add to Cart
-                    </Button>
-                )}
-            </div>
-        </div>
+                    )}
+                </Card.Footer>
+            </Card.Root>
+        </Stack>
+
+
     );
 };
 
